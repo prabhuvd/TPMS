@@ -1,5 +1,12 @@
 """
-This is communication module compatible with FTDI chip.
+Radio module is the most crucial module of the project.
+The device can be configured for most of the configurations using serial(UART) interface.
+
+The class is responsible for configuring the radio receiver and filtering the received data 
+based on the 4byte(32 bit)  ID's of the sensor.
+
+The ID's have to be read using a LF ( 125kHz) trigger tool or drive around your 
+car with a compatible receiver and analyze the received data.  
 @author: pdesai
 """
 import serial
@@ -35,7 +42,12 @@ class Radio:
     '    Intermediate Frequency : -20kHz
     '    Data Length :  10bytes
     '    Preamble : 0x0001
+    '
+    '
+    '  The hard coded constants are the register values of NCK2983 for the above configuration. 
+    '    
     '''
+    
     __vehicle_rf_config = [
         "02 20 10",  # RC_CMD_RADIO_OFF
         "03 20 32 01",  # RC_CMD_RADIO_RX_DEFAULTS
@@ -125,8 +137,9 @@ class Radio:
         time.sleep(.01)
         first_byte, rx_byte = self.read_cmd_response()
         return first_byte, rx_byte
-
+    
     def read_cmd_response(self):
+        # Reads one byte response which indicates the length of remaining  following bytes
         read_1_byte = self.byte_to_hex(self.__portInstance.read(1))
         read_byte_array = read_1_byte.split()
 
@@ -148,6 +161,8 @@ class Radio:
         self.write_list_commands(self.__vehicle_rf_config)
 
     def read_tpm_sensors(self):
+        # This is a very crucual part of the interface with RF receiver.
+        # Do not modify this without being fully aware of the protocol.
         first_byte, sensor_data = self.write_command(self.__read_sensor_cmd[0])
         rx_data = sensor_data.split()
         if first_byte > 6:

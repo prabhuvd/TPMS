@@ -18,7 +18,7 @@ GREY = (90, 90, 90)
 
 pygame.init ()
 
-
+# Enhance readability with class Dimensions.
 class Dimensions:
     def __init__(self, x, y):
         self.w = x

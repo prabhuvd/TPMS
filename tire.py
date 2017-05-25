@@ -1,6 +1,7 @@
 """
 Created on May 25, 2017
-
+The class handle all the tire related data including some GUI related 
+data for poisitioning of the values.
 @author: pdesai
 """
 
