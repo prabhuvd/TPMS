@@ -137,6 +137,11 @@ while not done:
     ########################################################
     
     '''
+    
+    ''' 
+    This is where the sensor data and UI ( user interface)
+    are linked to each other.
+    '''
     rx_status = radio_dev.read_tpm_sensors()
     all_sensor_data = radio_dev.get_sensor_data()
 
