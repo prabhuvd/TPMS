@@ -12,6 +12,8 @@ class Tire:
     __GREEN = (40, 227, 143)
     __RED = (227, 96, 40)
     __LIGHT_RED = (155, 0, 0)
+    # Create a gradient of RED to give a nice effect. This is display only when a low pressure or a 
+    # High temperature is detected.
     _red_blinking = [(199, 107, 68), (208, 103, 59), (218, 99, 49), (227, 95, 40), (236, 91, 31), (246, 87, 21)]
 
     def __init__(self, fourbyteid, backarea, ppos, tpos, pressure=0, temp=0):
