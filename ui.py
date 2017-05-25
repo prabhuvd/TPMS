@@ -21,8 +21,8 @@ BLUE = (0, 0, 255)
 pygame.init()
  
 # Set the width and height of the screen [width, height]
-screen_size = (600, 600)
-car_pixels = [160,360]
+screen_size = ( 320, 240)
+car_pixels = [86,189]
 screen = pygame.display.set_mode(screen_size)
  
 pygame.display.set_caption("Tire pressure monitor (Mazda 5 Sport:pdesai)")
@@ -131,7 +131,7 @@ while not done:
     pygame.draw.rect(screen, rl_color, RL_rectangle)
     pygame.draw.rect(screen, rr_color, RR_rectangle)
  
-    screen.blit(mazda, (screen_size[0]/2-car_pixels[0]/2,100))
+    screen.blit(mazda, (screen_size[0]/2-car_pixels[0]/2,25))
     
     screen.blit(pressure_font.render(fl, 1, WHITE),FL_pressure_pos)
     screen.blit(pressure_font.render(fr, 1, WHITE),FR_pressure_pos)
