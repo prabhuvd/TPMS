@@ -97,7 +97,7 @@ radio_dev = Radio(RADIO_PORT)
 
 print "Downloading Receiver Configuration..."
 radio_dev.configure_device()
-
+print "Done! "
 
 def test_params(presvalues, tempvalues):
     index = 0
@@ -172,16 +172,13 @@ while not done:
             RR.update_params(val[0], val[1])
         elif key == RL.identifier:
             RL.update_params(val[0], val[1])
-    status_all_tires=""
+ 
     for each in All_Tires:
         pygame.draw.rect(screen, each.get_color(), each.background_area)
         screen.blit(pfont.render(each.pressure(), 1, BLACK), each.pressure_pos)
         screen.blit(tfont.render(each.temperature(), 1, GREY), each.temperature_pos)
-        #status_all_tires = status_all_tires +each.tire_status() 
         screen.blit(status_font.render(each.tire_status(), 1, BLUE), each.status_pos)
-        
-    
-    #screen.blit(status_font.render(status_all_tires, 1, BLUE), ( 0,screen_pixels.h-20))
+
     screen.blit(mazda, (screen_pixels.w/2 - car_pixels.w/2, 40))
 
     # print count
