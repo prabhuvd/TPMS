@@ -52,7 +52,7 @@ mazda = pygame.image.load('img//mazda.png')
 
 pfont = pygame.font.SysFont('arial', 35,bold=True)
 tfont = pygame.font.SysFont('arial', 25,bold=True)
-status_font = pygame.font.SysFont('arial', 12)
+sfont = pygame.font.SysFont('arial', 12)
 
 Y_N_OFFSET = -35        # Y axis negative offset
 Y_P_OFFSET = 10         # Y axis positive offset
@@ -92,7 +92,7 @@ RL = Tire("0d2262b9",
            )
 
 
-All_Tires = [FL, FR, RR, RL]
+Tires = [FL, FR, RR, RL]
  
 
 radio_dev = Radio(RADIO_PORT)
@@ -103,7 +103,7 @@ print "Done! "
 
 def test_params(presvalues, tempvalues):
     index = 0
-    for tire in All_Tires:
+    for tire in Tires:
         tire.update_params(presvalues[index], tempvalues[index])
         index = index + 1
 
@@ -163,9 +163,9 @@ while not done:
     are linked to each other.
     '''
     radio_dev.read_tpm_sensors()
-    all_sensor_data = radio_dev.get_sensor_data()
-    print all_sensor_data
-    for key, val in all_sensor_data.iteritems():
+    d_sensor_values = radio_dev.get_sensor_data()
+  
+    for key, val in d_sensor_values.iteritems():
         if key == FL.identifier:
             FL.update_params(val[0], val[1])
         elif key == FR.identifier:
@@ -175,11 +175,11 @@ while not done:
         elif key == RL.identifier:
             RL.update_params(val[0], val[1])
  
-    for each in All_Tires:
+    for each in Tires:
         pygame.draw.rect(screen, each.get_color(), each.background_area)
         screen.blit(pfont.render(each.pressure(), 1, BLACK), each.pressure_pos)
         screen.blit(tfont.render(each.temperature(), 1, GREY), each.temperature_pos)
-        screen.blit(status_font.render(each.tire_status(), 1, BLUE), each.status_pos)
+        screen.blit(sfont.render(each.tire_status(), 1, BLUE), each.status_pos)
 
     screen.blit(mazda, (screen_pixels.w/2 - car_pixels.w/2, 40))
 
@@ -195,3 +195,5 @@ while not done:
 # Close the window and quit.
 radio_dev.close()
 pygame.quit()
+
+__version = '0.1'
