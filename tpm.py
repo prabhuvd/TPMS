@@ -54,39 +54,41 @@ pfont = pygame.font.SysFont('arial', 35,bold=True)
 tfont = pygame.font.SysFont('arial', 25,bold=True)
 status_font = pygame.font.SysFont('arial', 12)
 
-Y_N_OFFSET = -35
-Y_P_OFFSET = 10
-X_OFFSET = 10
-N_OFFSET = -20
-FL = Tire("0d224bff",  # ID
+Y_N_OFFSET = -35        # Y axis negative offset
+Y_P_OFFSET = 10         # Y axis positive offset
+X_N_OFFSET = -10        # X axis negative offset
+Y_STATUS_N_OFFSET = -20 # Y axis negative offset for STATUS
+
+
+FL = Tire("0d224bff",   # ID
           "FL ",
            (0, 0, screen_pixels.w / 2, screen_pixels.h / 2),  # Background Area
-           (screen_pixels.w * 1 / 8 - X_OFFSET, (Y_N_OFFSET + screen_pixels.h / 4)),  # Pressure position
-           (screen_pixels.w * 1 / 8 - X_OFFSET, (Y_P_OFFSET + screen_pixels.h / 4)),  # Temperature position
-           (0+Y_P_OFFSET, (screen_pixels.h/2)+N_OFFSET),  # status position           
+           (screen_pixels.w * 1 / 8 + X_N_OFFSET, (Y_N_OFFSET + screen_pixels.h / 4)),  # Pressure position
+           (screen_pixels.w * 1 / 8 + X_N_OFFSET, (Y_P_OFFSET + screen_pixels.h / 4)),  # Temperature position
+           (0+Y_P_OFFSET, (screen_pixels.h/2)+Y_STATUS_N_OFFSET),  # status position           
            )
 
 FR = Tire("0d224bf4",
           "FR ",
            (screen_pixels.w / 2, 0, screen_pixels.w / 2, screen_pixels.h / 2),
-           (screen_pixels.w * 3 / 4 - X_OFFSET, (Y_N_OFFSET + screen_pixels.h / 4)),
-           (screen_pixels.w * 3 / 4 - X_OFFSET, (Y_P_OFFSET + screen_pixels.h / 4)),
-           (screen_pixels.w/2+Y_P_OFFSET*4, (screen_pixels.h / 2)+N_OFFSET)  # status position
+           (screen_pixels.w * 3 / 4 + X_N_OFFSET, (Y_N_OFFSET + screen_pixels.h / 4)),
+           (screen_pixels.w * 3 / 4 + X_N_OFFSET, (Y_P_OFFSET + screen_pixels.h / 4)),
+           (screen_pixels.w/2+Y_P_OFFSET*4, (screen_pixels.h / 2)+Y_STATUS_N_OFFSET)  # status position
            )
 RR = Tire("0d22622a",
           "RR ",
            (screen_pixels.w / 2, screen_pixels.h / 2, screen_pixels.w / 2, screen_pixels.h / 2),
-           (screen_pixels.w * 3 / 4 - X_OFFSET, (Y_N_OFFSET + screen_pixels.h * 3 / 4)),
-           (screen_pixels.w * 3 / 4 - X_OFFSET, (Y_P_OFFSET + screen_pixels.h * 3 / 4)),
-           (screen_pixels.w/2+Y_P_OFFSET*4, (screen_pixels.h)+N_OFFSET)  # status position
+           (screen_pixels.w * 3 / 4 + X_N_OFFSET, (Y_N_OFFSET + screen_pixels.h * 3 / 4)),
+           (screen_pixels.w * 3 / 4 + X_N_OFFSET, (Y_P_OFFSET + screen_pixels.h * 3 / 4)),
+           (screen_pixels.w/2+Y_P_OFFSET*4, (screen_pixels.h)+Y_STATUS_N_OFFSET)  # status position
            )
 
 RL = Tire("0d2262b9",
           "RL ",
            (0, screen_pixels.h / 2, screen_pixels.w / 2, screen_pixels.h / 2),
-           (screen_pixels.w * 1 / 8 - X_OFFSET, (Y_N_OFFSET + screen_pixels.h * 3 / 4)),
-           (screen_pixels.w * 1 / 8 - X_OFFSET, (Y_P_OFFSET + screen_pixels.h * 3 / 4)),
-           (0+Y_P_OFFSET, (screen_pixels.h)+N_OFFSET)  # status position
+           (screen_pixels.w * 1 / 8 + X_N_OFFSET, (Y_N_OFFSET + screen_pixels.h * 3 / 4)),
+           (screen_pixels.w * 1 / 8 + X_N_OFFSET, (Y_P_OFFSET + screen_pixels.h * 3 / 4)),
+           (0+Y_P_OFFSET, (screen_pixels.h)+Y_STATUS_N_OFFSET)  # status position
            )
 
 
