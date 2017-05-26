@@ -1,7 +1,7 @@
 """
-Created on May 25, 2017
-The class handle all the tire related data including some GUI related 
-data for poisitioning of the values.
+Created on May 12, 2017
+The class handle all the tire related data including 
+some GUI related axis information .
 @author: pdesai
 """
 
@@ -53,6 +53,9 @@ class Tire:
     def temperature(self):
         return str(self._temperature) + "F"
 
+    # When the pressure and temperature parameters are updated 
+    # for each tire , the thresholds are checked and alert 
+    # message for each tire is updated.
     def update_params(self, pres, temperature):
         self._pressure = pres
         self._temperature = temperature
@@ -80,3 +83,5 @@ class Tire:
             self._color = self.__GREEN
             self._statusmsg=""
             self._blink = False
+
+__version = '0.1'

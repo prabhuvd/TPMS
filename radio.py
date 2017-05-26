@@ -1,4 +1,6 @@
 """
+Created on May 10, 2017
+
 Radio module is the most crucial module of the project.
 The device can be configured for most of the configurations using serial(UART) interface.
 
@@ -7,6 +9,7 @@ based on the 4byte(32 bit)  ID's of the sensor.
 
 The ID's have to be read using a LF ( 125kHz) trigger tool or drive around your 
 car with a compatible receiver and analyze the received data.  
+
 @author: pdesai
 """
 import serial
@@ -181,4 +184,4 @@ class Radio:
         return self.__sensor_ids
 
 
-version = '0.1'
+__version = '0.1'
