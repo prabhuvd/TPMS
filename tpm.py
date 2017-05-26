@@ -7,6 +7,7 @@ Created on May 15, 2017
 import pygame
 from radio import Radio
 from tire import Tire
+from analytics import TPMLogger
 
 # Define some colors
 BLACK = (0, 0, 0)
@@ -91,11 +92,11 @@ RL = Tire("0d2262b9",
            (0+Y_P_OFFSET, (screen_pixels.h)+Y_STATUS_N_OFFSET)  # status position
            )
 
+logger = TPMLogger("tire_data")
+radio_dev = Radio(RADIO_PORT)
 
 Tires = [FL, FR, RR, RL]
- 
 
-radio_dev = Radio(RADIO_PORT)
 
 print "Downloading Receiver Configuration..."
 radio_dev.configure_device()
@@ -164,7 +165,7 @@ while not done:
     '''
     radio_dev.read_tpm_sensors()
     d_sensor_values = radio_dev.get_sensor_data()
-  
+    logger.log_data(d_sensor_values)
     for key, val in d_sensor_values.iteritems():
         if key == FL.identifier:
             FL.update_params(val[0], val[1])
