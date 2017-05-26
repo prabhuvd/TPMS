@@ -12,9 +12,14 @@ from tire import Tire
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (40, 227, 143)
-RED = (227, 96, 40)
-BLUE = (0, 0, 255)
+RED =  (227, 96, 40)
+BLUE = (14, 63, 142)
 GREY = (90, 90, 90)
+
+# port specification for Linux / Windows  
+#RADIO_PORT = '/dev/ttyUSB0'
+APPLICATION_HDR = "pdesai:TPM"
+RADIO_PORT = 'COM6'
 
 pygame.init ()
 
@@ -27,11 +32,12 @@ class Dimensions:
 
 # Set the width and height of the screen [width, height]
 screen_pixels = Dimensions(320, 240)
-car_pixels = Dimensions(86, 189)
+car_pixels = Dimensions(65, 142)
 
 screen = pygame.display.set_mode((screen_pixels.w, screen_pixels.h))
 
-pygame.display.set_caption("pdesai:TPM")
+
+pygame.display.set_caption(APPLICATION_HDR)
 
 # Loop until the user clicks the close button.
 done = False
@@ -44,39 +50,51 @@ PIXEL_MULT = 100
 # noinspection PyUnresolvedReferences
 mazda = pygame.image.load('img//mazda.png')
 
-pfont = pygame.font.SysFont('arial', 45)
-tfont = pygame.font.SysFont('arial', 35)
+pfont = pygame.font.SysFont('arial', 35,bold=True)
+tfont = pygame.font.SysFont('arial', 25,bold=True)
+status_font = pygame.font.SysFont('arial', 12)
 
-Y_N_OFFSET = -45
+Y_N_OFFSET = -35
 Y_P_OFFSET = 10
 X_OFFSET = 10
+N_OFFSET = -20
 FL = Tire("0d224bff",  # ID
+          "FL ",
            (0, 0, screen_pixels.w / 2, screen_pixels.h / 2),  # Background Area
-           (screen_pixels.w * 1 / 8 - X_OFFSET, (Y_N_OFFSET + screen_pixels.h / 4)),  # Pressure location
-           (screen_pixels.w * 1 / 8 - X_OFFSET, (Y_P_OFFSET + screen_pixels.h / 4))  # Temperature location
+           (screen_pixels.w * 1 / 8 - X_OFFSET, (Y_N_OFFSET + screen_pixels.h / 4)),  # Pressure position
+           (screen_pixels.w * 1 / 8 - X_OFFSET, (Y_P_OFFSET + screen_pixels.h / 4)),  # Temperature position
+           (0+Y_P_OFFSET, (screen_pixels.h/2)+N_OFFSET),  # status position           
            )
 
 FR = Tire("0d224bf4",
+          "FR ",
            (screen_pixels.w / 2, 0, screen_pixels.w / 2, screen_pixels.h / 2),
            (screen_pixels.w * 3 / 4 - X_OFFSET, (Y_N_OFFSET + screen_pixels.h / 4)),
-           (screen_pixels.w * 3 / 4 - X_OFFSET, (Y_P_OFFSET + screen_pixels.h / 4))
+           (screen_pixels.w * 3 / 4 - X_OFFSET, (Y_P_OFFSET + screen_pixels.h / 4)),
+           (screen_pixels.w/2+Y_P_OFFSET*4, (screen_pixels.h / 2)+N_OFFSET)  # status position
            )
 RR = Tire("0d22622a",
+          "RR ",
            (screen_pixels.w / 2, screen_pixels.h / 2, screen_pixels.w / 2, screen_pixels.h / 2),
            (screen_pixels.w * 3 / 4 - X_OFFSET, (Y_N_OFFSET + screen_pixels.h * 3 / 4)),
-           (screen_pixels.w * 3 / 4 - X_OFFSET, (Y_P_OFFSET + screen_pixels.h * 3 / 4))
+           (screen_pixels.w * 3 / 4 - X_OFFSET, (Y_P_OFFSET + screen_pixels.h * 3 / 4)),
+           (screen_pixels.w/2+Y_P_OFFSET*4, (screen_pixels.h)+N_OFFSET)  # status position
            )
 
 RL = Tire("0d2262b9",
+          "RL ",
            (0, screen_pixels.h / 2, screen_pixels.w / 2, screen_pixels.h / 2),
            (screen_pixels.w * 1 / 8 - X_OFFSET, (Y_N_OFFSET + screen_pixels.h * 3 / 4)),
-           (screen_pixels.w * 1 / 8 - X_OFFSET, (Y_P_OFFSET + screen_pixels.h * 3 / 4))
+           (screen_pixels.w * 1 / 8 - X_OFFSET, (Y_P_OFFSET + screen_pixels.h * 3 / 4)),
+           (0+Y_P_OFFSET, (screen_pixels.h)+N_OFFSET)  # status position
            )
 
 
 All_Tires = [FL, FR, RR, RL]
+ 
 
-radio_dev = Radio('COM6')
+radio_dev = Radio(RADIO_PORT)
+
 print "Downloading Receiver Configuration..."
 radio_dev.configure_device()
 
@@ -111,8 +129,8 @@ while not done:
     ########################################################
     
     if (count <500):
-        test_params([27,35,35,35],
-                    [62,60,63,65])        
+        test_params([27,35,35,35], # pressure values
+                    [62,60,63,65])  # temperature values        
     elif(count >=500 and count<1000):
         test_params([35,27,35,35],                    
                     [70,75,75,68])    
@@ -142,9 +160,9 @@ while not done:
     This is where the sensor data and UI ( user interface)
     are linked to each other.
     '''
-    rx_status = radio_dev.read_tpm_sensors()
+    radio_dev.read_tpm_sensors()
     all_sensor_data = radio_dev.get_sensor_data()
-
+    print all_sensor_data
     for key, val in all_sensor_data.iteritems():
         if key == FL.identifier:
             FL.update_params(val[0], val[1])
@@ -154,13 +172,17 @@ while not done:
             RR.update_params(val[0], val[1])
         elif key == RL.identifier:
             RL.update_params(val[0], val[1])
-
+    status_all_tires=""
     for each in All_Tires:
         pygame.draw.rect(screen, each.get_color(), each.background_area)
         screen.blit(pfont.render(each.pressure(), 1, BLACK), each.pressure_pos)
         screen.blit(tfont.render(each.temperature(), 1, GREY), each.temperature_pos)
-
-    screen.blit(mazda, (screen_pixels.w / 2 - car_pixels.w / 2, 25))
+        #status_all_tires = status_all_tires +each.tire_status() 
+        screen.blit(status_font.render(each.tire_status(), 1, BLUE), each.status_pos)
+        
+    
+    #screen.blit(status_font.render(status_all_tires, 1, BLUE), ( 0,screen_pixels.h-20))
+    screen.blit(mazda, (screen_pixels.w/2 - car_pixels.w/2, 40))
 
     # print count
     # --- Drawing code should go here
@@ -169,7 +191,7 @@ while not done:
     pygame.display.flip()
 
     # --- Limit to 10 frames per second
-    clock.tick(10)
+    clock.tick(30)
 
 # Close the window and quit.
 radio_dev.close()
