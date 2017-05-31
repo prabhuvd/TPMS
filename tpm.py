@@ -53,7 +53,7 @@ mazda = pygame.image.load('img//mazda.png')
 
 pfont = pygame.font.SysFont('arial', 35,bold=True)
 tfont = pygame.font.SysFont('arial', 25,bold=True)
-sfont = pygame.font.SysFont('arial', 12)
+sfont = pygame.font.SysFont('arial', 10)
 
 Y_N_OFFSET = -35        # Y axis negative offset
 Y_P_OFFSET = 10         # Y axis positive offset
@@ -101,14 +101,18 @@ Tires = [FL, FR, RR, RL]
 print "Downloading Receiver Configuration..."
 radio_dev.configure_device()
 print "Done! "
+'''
+##############################################################
+#######     Test cases implementation UI testing       #######   
+##############################################################
 
 def test_params(presvalues, tempvalues):
     index = 0
     for tire in Tires:
         tire.update_params(presvalues[index], tempvalues[index])
         index = index + 1
-
-
+#############################################################
+'''
 count = 0
 # -------- Main Program Loop -----------
 while not done:
