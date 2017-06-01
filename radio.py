@@ -68,6 +68,7 @@ class Radio:
     ]
 
     def __init__(self, portnum, baud=115200):
+        self.new_message = False
         try:
             self.__portInstance = serial.Serial(portnum, baud, timeout=.01)
         except IOError as e:
@@ -169,19 +170,25 @@ class Radio:
         first_byte, sensor_data = self.write_command(self.__read_sensor_cmd[0])
         rx_data = sensor_data.split()
         if first_byte > 6:
-            # Ignore the return parameters , this is required to turn on 
-            # the receiver after successful reception.
-            self.write_command(self.__receiver_on_cmd[0])
-            sensor_msg = rx_data[6:]
-            if len(sensor_msg) > 6:
-                extracted_id = self.get_TPM_ID(sensor_msg)
-                # Filter the data and store only the values for learned ID's
-                if self.get_TPM_ID(sensor_msg) in self.__sensor_ids:
-                    self.__sensor_ids[extracted_id] = [self.get_pressure_PSI(sensor_msg),
-                                                       self.get_temperature_F(sensor_msg)]
+            if(int(rx_data[1],16)==0):
+                if( int(rx_data[4],16) & 0x10 )==16:
+                    # Ignore the return parameters , this is required to turn on 
+                    # the receiver after successful reception.
+                    self.write_command(self.__receiver_on_cmd[0])
+                    sensor_msg = rx_data[6:]
+                    
+                    if len(sensor_msg) > 6:
+                        extracted_id = self.get_TPM_ID(sensor_msg)
+                        # Filter the data and store only the values for learned ID's
+                        if self.get_TPM_ID(sensor_msg) in self.__sensor_ids:
+                            self.new_message = True
+                            self.__sensor_ids[extracted_id] = [self.get_pressure_PSI(sensor_msg),
+                                                               self.get_temperature_F(sensor_msg)]
 
     def get_sensor_data(self):
-        return self.__sensor_ids
+        msg_status = self.new_message
+        self.new_message = False
+        return msg_status,self.__sensor_ids
 
 
 __version = '0.1'

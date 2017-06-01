@@ -19,9 +19,9 @@ GREY = (90, 90, 90)
 
 # port specification for Linux / Windows  
 RADIO_PORT = '/dev/ttyUSB0'
-APPLICATION_HDR = "TPM(pdesai)"
+APPLICATION_HDR = "pdesai:TPM"
 #RADIO_PORT = 'COM6'
-    
+
 pygame.init ()
 
 # Enhance readability with class Dimensions.
@@ -61,7 +61,7 @@ X_N_OFFSET = -10        # X axis negative offset
 Y_STATUS_N_OFFSET = -20 # Y axis negative offset for STATUS
 
 
-FL = Tire("0d22622a",   # ID
+FL = Tire("0d224bff",   # ID
           "FL ",
            (0, 0, screen_pixels.w / 2, screen_pixels.h / 2),  # Background Area
            (screen_pixels.w * 1 / 8 + X_N_OFFSET, (Y_N_OFFSET + screen_pixels.h / 4)),  # Pressure position
@@ -69,14 +69,14 @@ FL = Tire("0d22622a",   # ID
            (0+Y_P_OFFSET, (screen_pixels.h/2)+Y_STATUS_N_OFFSET),  # status position           
            )
 
-FR = Tire("0d224bff",
+FR = Tire("0d224bf4",
           "FR ",
            (screen_pixels.w / 2, 0, screen_pixels.w / 2, screen_pixels.h / 2),
            (screen_pixels.w * 3 / 4 + X_N_OFFSET, (Y_N_OFFSET + screen_pixels.h / 4)),
            (screen_pixels.w * 3 / 4 + X_N_OFFSET, (Y_P_OFFSET + screen_pixels.h / 4)),
            (screen_pixels.w/2+Y_P_OFFSET*4, (screen_pixels.h / 2)+Y_STATUS_N_OFFSET)  # status position
            )
-RR = Tire("0d224bf4",
+RR = Tire("0d22622a",
           "RR ",
            (screen_pixels.w / 2, screen_pixels.h / 2, screen_pixels.w / 2, screen_pixels.h / 2),
            (screen_pixels.w * 3 / 4 + X_N_OFFSET, (Y_N_OFFSET + screen_pixels.h * 3 / 4)),
@@ -168,17 +168,21 @@ while not done:
     are linked to each other.
     '''
     radio_dev.read_tpm_sensors()
-    d_sensor_values = radio_dev.get_sensor_data()
-    logger.log_data(d_sensor_values)
-    for key, val in d_sensor_values.iteritems():
-        if key == FL.identifier:
-            FL.update_params(val[0], val[1])
-        elif key == FR.identifier:
-            FR.update_params(val[0], val[1])
-        elif key == RR.identifier:
-            RR.update_params(val[0], val[1])
-        elif key == RL.identifier:
-            RL.update_params(val[0], val[1])
+    new_message,d_sensor_values = radio_dev.get_sensor_data()
+   
+    if( new_message): 
+        new_message=False
+        print d_sensor_values
+        logger.log_data(d_sensor_values)
+        for key, val in d_sensor_values.iteritems():
+            if key == FL.identifier:
+                FL.update_params(val[0], val[1])
+            elif key == FR.identifier:
+                FR.update_params(val[0], val[1])
+            elif key == RR.identifier:
+                RR.update_params(val[0], val[1])
+            elif key == RL.identifier:
+                RL.update_params(val[0], val[1])
  
     for each in Tires:
         pygame.draw.rect(screen, each.get_color(), each.background_area)
