@@ -50,8 +50,21 @@ class Radio:
     '  The hard coded constants are the register values of NCK2983 for the above configuration. 
     '    
     '''
-    
-    __vehicle_rf_config = [
+    __vehicle_rf_config_mantraF = [
+        "02 20 10",#RC_CMD_RADIO_OFF 
+        "03 20 32 01",#RC_CMD_RADIO_RX_DEFAULTS
+        "0B 20 13 10 82 B9 06 00 48 04 16 03",#RC_CMD_RADIO_LO_FREQUENCY 
+        "03 20 34 01",#RC_CMD_RADIO_RX_INPUT 
+        "05 20 39 00 02 00",#RC_CMD_RADIO_RX_DBG_CTRL 
+        "05 20 3F 01 07 07",#RC_CMD_RADIO_RX_CONFIG_RSSI
+        "11 20 3B 00 7F C5 00 00 AE 1D 3E 01 00 00 02 00 00 01",#RC_CMD_RADIO_RX_CONFIG_2 
+        "13 20 3D 00 55 BE 01 00 04 00 31 00 05 00 D7 03 00 00 00 0A",#RC_CMD_RADIO_RX_CDREC_2_NCK2982 
+        "21 20 3C 00 01 00 00 00 07 00 00 00 00 00 07 00 00 00 50 00 00 01 B6 4C 66 01 00 05 02 03 01 01 01 01",#RC_CMD_RADIO_RX_DPROC_2 
+        "19 20 3E 00 28 07 1D 00 66 CD 1D 00 1D 00 03 00 2B 01 96 08 03 00 20 01 05 08",#RC_CMD_RADIO_RX_SM_2_NCK2983  
+        "03 20 30 41",#RC_CMD_RADIO_RX_ON 
+        "03 20 38 00",  # RC_CMD_RADIO_RX_DATA
+              ]      
+    __vehicle_rf_config_mantraV2 = [
         "02 20 10",  # RC_CMD_RADIO_OFF
         "03 20 32 01",  # RC_CMD_RADIO_RX_DEFAULTS
         "0B 20 13 10 82 B9 06 00 48 04 16 03",  # RC_CMD_RADIO_LO_FREQUENCY
@@ -162,7 +175,7 @@ class Radio:
             self.write_command(cmdlist[commands])
 
     def configure_device(self):
-        self.write_list_commands(self.__vehicle_rf_config)
+        self.write_list_commands(self.__vehicle_rf_config_mantraF)
 
     def read_tpm_sensors(self):
         # This is a very crucual part of the interface with RF receiver.

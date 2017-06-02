@@ -18,9 +18,9 @@ BLUE = (14, 63, 142)
 GREY = (90, 90, 90)
 
 # port specification for Linux / Windows  
-RADIO_PORT = '/dev/ttyUSB0'
+#RADIO_PORT = '/dev/ttyUSB0'
 APPLICATION_HDR = "pdesai:TPM"
-#RADIO_PORT = 'COM6'
+RADIO_PORT = 'COM8'
 
 pygame.init ()
 
@@ -159,8 +159,7 @@ while not done:
 
     ########################################################
     #######        End of Test cases for UI          #######   
-    ########################################################
-    
+    ######################################################## 
     '''
     
     ''' 
