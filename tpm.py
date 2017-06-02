@@ -61,7 +61,7 @@ X_N_OFFSET = -10        # X axis negative offset
 Y_STATUS_N_OFFSET = -20 # Y axis negative offset for STATUS
 
 
-FL = Tire("0d224bff",   # ID
+FL = Tire("0d22622a",   # ID
           "FL ",
            (0, 0, screen_pixels.w / 2, screen_pixels.h / 2),  # Background Area
            (screen_pixels.w * 1 / 8 + X_N_OFFSET, (Y_N_OFFSET + screen_pixels.h / 4)),  # Pressure position
@@ -69,14 +69,14 @@ FL = Tire("0d224bff",   # ID
            (0+Y_P_OFFSET, (screen_pixels.h/2)+Y_STATUS_N_OFFSET),  # status position           
            )
 
-FR = Tire("0d224bf4",
+FR = Tire("0d224bff",
           "FR ",
            (screen_pixels.w / 2, 0, screen_pixels.w / 2, screen_pixels.h / 2),
            (screen_pixels.w * 3 / 4 + X_N_OFFSET, (Y_N_OFFSET + screen_pixels.h / 4)),
            (screen_pixels.w * 3 / 4 + X_N_OFFSET, (Y_P_OFFSET + screen_pixels.h / 4)),
            (screen_pixels.w/2+Y_P_OFFSET*4, (screen_pixels.h / 2)+Y_STATUS_N_OFFSET)  # status position
            )
-RR = Tire("0d22622a",
+RR = Tire("0d224bf4",
           "RR ",
            (screen_pixels.w / 2, screen_pixels.h / 2, screen_pixels.w / 2, screen_pixels.h / 2),
            (screen_pixels.w * 3 / 4 + X_N_OFFSET, (Y_N_OFFSET + screen_pixels.h * 3 / 4)),
